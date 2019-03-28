@@ -1,32 +1,21 @@
-<!DOCTYPE html>
-<html>
-  <head>
-	<meta charset="utf-8">
-	<title>FLASK</title>
-	<link href="/static/style.css" type="text/css" rel="stylesheet">
-  </head>
-  <body> 
-	<marquee><b>FLASK! - {{nome}}</b></marquee>
-	<ul> 
-            {% for item in items %}
-	    <li>Item {{item}}</li>
-	    {% endfor %}
-	</ul>
-	<table> 
-	    <tr>
-		<th>ID</th>
-		<th>NOME</th>
-   	    </tr>
-	    <tr>
-		<td>01</td>
-		<td>Yago Ésquines</td>
-	    </tr>
-            {% for u in usuarios %}
-	    <tr>
-		<td>{{u.id}}</td>
-		<td>{{u.nome}}</td>
-	    </tr>
-	    {% endfor %}
-	</table>
-  </body>
-</html>
+{% extends 'base.html' %}
+{% block title %}HOME{% endblock title %}
+{% block main %}
+<table> 
+    <tr>
+	<th>ID</th>
+	<th>NOME</th>
+    </tr>
+    <tr>
+	<td>01</td>
+	<td>Yago Ésquines</td>
+    </tr>
+    {% for u in usuarios %}
+    <tr>
+	<td>{{u.id}}</td>
+	<td>{{u.nome}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock main %}
+{% block atoa %}{% endblock atoa %}

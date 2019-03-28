@@ -1,12 +1,25 @@
 #!/usr/bin/python3
+import json
+from pymongo import MongoClient
+from bson.json_util import dumps
 from datetime import datetime
+from blueprint.site import site
 from flask import Flask, jsonify, make_response, redirect, request, render_template
 
 app = Flask(__name__)
+app.register_blueprint(site)
+
+#client = MongoClient('mongodb://user:senha@base')
+client = MongoClient()
+db = client.segunda
+#for u in db.usuario.find():
+#    print(u)
+#exit()
 
 @app.route('/')
 def home():
-    return jsonify({"mensagem" : 'Rodando...'})
+    return jsonify([json.loads(dumps(u)) for u in db.usuario.find()])
+#   return jsonify({"mensagem" : 'Rodando...'})
 
 @app.route('/data')
 def data():
@@ -26,13 +39,6 @@ def post():
         return make_response(jsonify({"mensagem" : "Corpo não pode ser vazio"}),400)
     dados['lapetina'] = 'fumacinha'
     return jsonify(dados)
-
-@app.route('/site')
-def site():
-    dados = [{'id' : '02', 'nome' : 'Paramahansa Yogananda'}]
-    dados.append({'id' : '03', 'nome' : 'Gabriel Pensador'})
-    dados.append({'id' : '04', 'nome' : 'João Batista'})
-    return render_template('index.html', nome="Yago", items=["1","2","3","4","PHP - Potato High Potato"], usuarios=dados)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
