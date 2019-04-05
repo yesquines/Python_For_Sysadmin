@@ -1,0 +1,24 @@
+pipeline{
+    agent any
+    stages{
+        stage('Build'){
+            steps{
+                cleanWs()
+                git credentialsId: '1bb2ee81-afaf-40ec-a82c-02fae03c3ae8', url: 'git@172.10.10.20:root/app.git'
+                sh label: 'Instalando Requirements.txt', script: 'pip3 install -r requirements.txt'
+            }
+        }
+        stage('Test'){
+            steps{
+                sh label: 'Iniciando a Aplicação', script: 'APP_HOST="0.0.0.0" APP_PORT="5000" python3 app.py &'
+                sh label: 'Iniciando a Aplicação', script: 'APP_PORT="5000" python3 teste.py'
+		sh label: 'Matando o Processo', script: 'pkill python3'
+            }
+        }
+        stage('Deploy'){
+            steps{
+                echo 'Deploying...'
+            }
+        }
+    }
+}
